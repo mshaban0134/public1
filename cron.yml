@@ -1,0 +1,19 @@
+- name: Create a daily cron job
+  hosts: rhelnode
+  become: yes
+  tasks:
+    - name: copy backup.sh
+      copy:
+        src: files/backup.sh
+        dest: /usr/local/bin/backup.sh
+        mode: 0755
+
+
+    - name: Run backup every day.
+      ansible.builtin.cron:
+        name: "Daily backup"
+        minute: "32"
+        hour: "20"
+        job: "/usr/local/bin/backup.sh"
+        cron_file: "myapp_cleanup"
+        user: root
