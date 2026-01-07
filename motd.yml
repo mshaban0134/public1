@@ -1,0 +1,28 @@
+- name: Configure System 
+  hosts: rhelnode 
+  tasks:
+    - name: create a custom motd
+      template:
+        src: motd.j2  
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644 
+
+    - name: checking either motd file exsists or not
+      stat:
+        path: /etc/motd
+      register: motd   # register is variable that is used to capture the output 
+
+    - name:  Display result of state
+      debug:
+        var: motd   
+
+    - name: copy custom /etc/issue file
+      copy:
+        src: files/issue
+        dest: /etc/issue
+        owner: root
+        group: root
+        mode: 0644
+              
